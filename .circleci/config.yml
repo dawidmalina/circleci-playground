@@ -66,8 +66,7 @@ jobs:
   deploy:
     # Specify the execution environment. You can specify an image from Docker Hub or use one of our convenience images from CircleCI's Developer Hub.
     # See: https://circleci.com/docs/configuration-reference/#executor-job
-    docker:
-      - image: cimg/base:stable
+    executor: default
     resource_class: small
     steps:
       - echo-command:
@@ -77,8 +76,7 @@ jobs:
   use-tailscale:
     # Specify the execution environment. You can specify an image from Docker Hub or use one of our convenience images from CircleCI's Developer Hub.
     # See: https://circleci.com/docs/configuration-reference/#executor-job
-    docker:
-      - image: cimg/base:stable
+    executor: default
     resource_class: small
     steps:
       - tailscale/install
