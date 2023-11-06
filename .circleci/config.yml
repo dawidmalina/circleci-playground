@@ -2,14 +2,18 @@
 # See: https://circleci.com/docs/configuration-reference
 version: 2.1
 
+# Specify the execution environment. You can specify an image from Docker Hub or use one of our convenience images from CircleCI's Developer Hub.
+# See: https://circleci.com/docs/configuration-reference/#executor-job
+executors:
+  default:
+    docker:
+      - image: cimg/base:stable
+
 # Define a job to be invoked later in a workflow.
 # See: https://circleci.com/docs/configuration-reference/#jobs
 jobs:
   init-job:
-    # Specify the execution environment. You can specify an image from Docker Hub or use one of our convenience images from CircleCI's Developer Hub.
-    # See: https://circleci.com/docs/configuration-reference/#executor-job
-    docker:
-      - image: cimg/base:stable
+    executor: default
     resource_class: small
     # Add steps to the job
     # See: https://circleci.com/docs/configuration-reference/#steps
@@ -20,10 +24,7 @@ jobs:
           command: "echo Init!"
 
   say-hello:
-    # Specify the execution environment. You can specify an image from Docker Hub or use one of our convenience images from CircleCI's Developer Hub.
-    # See: https://circleci.com/docs/configuration-reference/#executor-job
-    docker:
-      - image: cimg/base:stable
+    executor: default
     resource_class: small
     # Add steps to the job
     # See: https://circleci.com/docs/configuration-reference/#steps
@@ -36,10 +37,7 @@ jobs:
             echo Say Hello!
 
   say-world:
-    # Specify the execution environment. You can specify an image from Docker Hub or use one of our convenience images from CircleCI's Developer Hub.
-    # See: https://circleci.com/docs/configuration-reference/#executor-job
-    docker:
-      - image: cimg/base:stable
+    executor: default
     resource_class: small
     # Add steps to the job
     # See: https://circleci.com/docs/configuration-reference/#steps
