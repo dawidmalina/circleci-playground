@@ -2,6 +2,9 @@
 # See: https://circleci.com/docs/configuration-reference
 version: 2.1
 
+orbs:
+  tailscale: crowley-namespace/tailscale@1.0.0
+
 # Specify the execution environment. You can specify an image from Docker Hub or use one of our convenience images from CircleCI's Developer Hub.
 # See: https://circleci.com/docs/configuration-reference/#executor-job
 executors:
@@ -78,9 +81,17 @@ jobs:
       - image: cimg/base:stable
     resource_class: small
     steps:
+      - tailscale/install
+      - tailscale/connect:
+          tailscale-optional-flags: --advertise-tags=tag:ci
       - echo-command:
           title: "Demo"
           message: "Demo!"
+      - run:
+          name: connectivity
+          command: |
+            nc -w 3 ${ENDPOINT} 22
+      - tailscale/disconnect
 
 # Orchestrate jobs using workflows
 # See: https://circleci.com/docs/configuration-reference/#workflows
