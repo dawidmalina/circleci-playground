@@ -87,7 +87,7 @@ jobs:
           # out (as we will be). Without --json it returns an error if we're not up.
           sudo -E tailscale status --json >/dev/null
       - tailscale/connect:
-          tailscale-optional-flags: --advertise-tags=tag:ci
+          tailscale-optional-flags: --advertise-tags=tag:ci --hostname=$(echo circleci-${HOSTNAME}) --accept-routes
       - echo-command:
           title: "Demo"
           message: "Demo!"
