@@ -81,7 +81,7 @@ jobs:
     steps:
       - tailscale/install
       - run:
-          name: x
+          name: install
           command: |
             sudo -E tailscaled --state=mem: --tun=userspace-networking 2>~/tailscaled.log &
             # And check that tailscaled came up. The CLI will block for a bit waiting
@@ -90,8 +90,13 @@ jobs:
             sudo -E tailscale status --json >/dev/null
             ps -aux
           background: true
-      - tailscale/connect:
-          tailscale-optional-flags: --advertise-tags=tag:ci --hostname=$(echo circleci-${HOSTNAME}) --accept-routes
+      - run:
+          name: connect
+          command: |
+            ps -aux
+            sudo -E tailscale up --authkey ${TAILSCALE_AUTHKEY} --advertise-tags=tag:ci --hostname=$(echo circleci-${HOSTNAME}) --accept-routes
+      # - tailscale/connect:
+      #     tailscale-optional-flags: --advertise-tags=tag:ci --hostname=$(echo circleci-${HOSTNAME}) --accept-routes
       - echo-command:
           title: "Demo"
           message: "Demo!"
