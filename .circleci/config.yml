@@ -80,6 +80,12 @@ jobs:
     resource_class: small
     steps:
       - tailscale/install
+      - run: |
+          sudo -E tailscaled --state=mem: ${ADDITIONAL_DAEMON_ARGS} 2>~/tailscaled.log &
+          # And check that tailscaled came up. The CLI will block for a bit waiting
+          # for it. And --json will make it exit with status 0 even if we're logged
+          # out (as we will be). Without --json it returns an error if we're not up.
+          sudo -E tailscale status --json >/dev/null
       - tailscale/connect:
           tailscale-optional-flags: --advertise-tags=tag:ci
       - echo-command:
