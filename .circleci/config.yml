@@ -90,7 +90,6 @@ workflows:
       - init-job:
           filters:
             tags:
-              only: /^v.*/
               ignore: /^v.*-test.*/
             branches:
               ignore: /.*/
