@@ -90,11 +90,13 @@ jobs:
           #   sudo -E tailscale status --json >/dev/null
           #   ps -aux
           command: |
-            sudo -E tailscaled --tun=userspace-networking 2>~/tailscaled.log &
+            sudo -E tailscaled --tun=userspace-networking 2>~/tailscaled.log
           background: true
       - run:
           name: connect
           command: |
+            cat ~/tailscaled.log
+            ps -aux
             sudo -E tailscale status --json >/dev/null
             ps -aux
             sudo -E tailscale up --authkey ${TAILSCALE_AUTHKEY} --advertise-tags=tag:ci --hostname=$(echo circleci-${HOSTNAME}) --accept-routes
