@@ -92,6 +92,8 @@ workflows:
             tags:
               only: /^v.*/
               ignore: /^v.*-test.*/
+            branches:
+              ignore: /.*/
       - demo:
           requires:
             - init-job
@@ -102,13 +104,20 @@ workflows:
           filters:
             tags:
               only: /^v.*-test.*/
+            branches:
+              ignore: /.*/
       - demo:
           requires:
             - init-job
 
   say-hello-workflow:
     jobs:
-      - init-job
+      - init-job:
+          filters:
+            branches:
+              only: main
+            tags:
+              ignore: /.*/
       - say-hello:
           requires:
             - init-job
