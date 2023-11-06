@@ -71,9 +71,41 @@ jobs:
           title: "Deploy"
           message: "Deploy!"
 
+  demo:
+    # Specify the execution environment. You can specify an image from Docker Hub or use one of our convenience images from CircleCI's Developer Hub.
+    # See: https://circleci.com/docs/configuration-reference/#executor-job
+    docker:
+      - image: cimg/base:stable
+    resource_class: small
+    steps:
+      - echo-command:
+          title: "Demo"
+          message: "Demo!"
+
 # Orchestrate jobs using workflows
 # See: https://circleci.com/docs/configuration-reference/#workflows
 workflows:
+  tagged-build:
+    jobs:
+      - init-job:
+          filters:
+            tags:
+              only: /^v.*/
+              ignore: /^v.*-test.*/
+      - demo:
+          requires:
+            - init-job
+
+  tagged-test-build:
+    jobs:
+      - init-job:
+          filters:
+            tags:
+              only: /^v.*-test.*/
+      - demo:
+          requires:
+            - init-job
+
   say-hello-workflow:
     jobs:
       - init-job
