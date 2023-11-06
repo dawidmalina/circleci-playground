@@ -9,6 +9,23 @@ executors:
     docker:
       - image: cimg/base:stable
 
+commands:
+  echo-command:
+    parameters:
+      message:
+        description: message to be printed
+        type: string
+        default: ""
+      name:
+        description: step name
+        type: string
+        default: job
+    steps:
+      - run:
+          name: << parameters.name >>
+          command: |
+            echo Say << parameters.message >>!
+
 # Define a job to be invoked later in a workflow.
 # See: https://circleci.com/docs/configuration-reference/#jobs
 jobs:
@@ -19,9 +36,9 @@ jobs:
     # See: https://circleci.com/docs/configuration-reference/#steps
     steps:
       # - checkout
-      - run:
-          name: "Init"
-          command: "echo Init!"
+      - echo-command:
+          name: Init
+          message: "Init!"
 
   say-hello:
     executor: default
@@ -29,12 +46,9 @@ jobs:
     # Add steps to the job
     # See: https://circleci.com/docs/configuration-reference/#steps
     steps:
-      # - checkout
-      - run:
+      - echo-command:
           name: "Say hello"
-          command: |
-            sleep 1
-            echo Say Hello!
+          message: "Hello!"
 
   say-world:
     executor: default
@@ -42,12 +56,9 @@ jobs:
     # Add steps to the job
     # See: https://circleci.com/docs/configuration-reference/#steps
     steps:
-      # - checkout
-      - run:
+      - echo-command:
           name: "Say world"
-          command: |
-            sleep 3
-            echo Say World!
+          message: "World!"
 
   deploy:
     # Specify the execution environment. You can specify an image from Docker Hub or use one of our convenience images from CircleCI's Developer Hub.
@@ -55,13 +66,10 @@ jobs:
     docker:
       - image: cimg/base:stable
     resource_class: small
-    # Add steps to the job
-    # See: https://circleci.com/docs/configuration-reference/#steps
     steps:
-      # - checkout
-      - run:
+      - echo-command:
           name: "Deploy"
-          command: "echo Say Deploy!"
+          message: "Deploy!"
 
 # Orchestrate jobs using workflows
 # See: https://circleci.com/docs/configuration-reference/#workflows
