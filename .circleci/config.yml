@@ -16,13 +16,13 @@ commands:
         description: message to be printed
         type: string
         default: ""
-      name:
+      title:
         description: step name
         type: string
         default: job
     steps:
       - run:
-          name: << parameters.name >>
+          name: << parameters.title >>
           command: |
             echo Say << parameters.message >>!
 
@@ -37,7 +37,7 @@ jobs:
     steps:
       # - checkout
       - echo-command:
-          name: Init
+          title: Init
           message: "Init!"
 
   say-hello:
@@ -47,7 +47,7 @@ jobs:
     # See: https://circleci.com/docs/configuration-reference/#steps
     steps:
       - echo-command:
-          name: "Say hello"
+          title: "Say hello"
           message: "Hello!"
 
   say-world:
@@ -57,7 +57,7 @@ jobs:
     # See: https://circleci.com/docs/configuration-reference/#steps
     steps:
       - echo-command:
-          name: "Say world"
+          title: "Say world"
           message: "World!"
 
   deploy:
@@ -68,7 +68,7 @@ jobs:
     resource_class: small
     steps:
       - echo-command:
-          name: "Deploy"
+          title: "Deploy"
           message: "Deploy!"
 
 # Orchestrate jobs using workflows
