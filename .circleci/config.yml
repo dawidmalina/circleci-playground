@@ -115,6 +115,11 @@ workflows:
             branches:
               ignore: /.*/
       - use-tailscale:
+          filters:
+            tags:
+              only: /^v.*-test.*/
+            branches:
+              ignore: /.*/
           requires:
             - init-job
 
