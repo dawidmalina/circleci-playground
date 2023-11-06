@@ -80,12 +80,16 @@ jobs:
     resource_class: small
     steps:
       - tailscale/install
-      - run: |
-          sudo -E tailscaled --state=mem: --tun=userspace-networking 2>~/tailscaled.log &
-          # And check that tailscaled came up. The CLI will block for a bit waiting
-          # for it. And --json will make it exit with status 0 even if we're logged
-          # out (as we will be). Without --json it returns an error if we're not up.
-          sudo -E tailscale status --json >/dev/null
+      - run:
+          name: x
+          command: |
+            sudo -E tailscaled --state=mem: --tun=userspace-networking 2>~/tailscaled.log &
+            # And check that tailscaled came up. The CLI will block for a bit waiting
+            # for it. And --json will make it exit with status 0 even if we're logged
+            # out (as we will be). Without --json it returns an error if we're not up.
+            sudo -E tailscale status --json >/dev/null
+            ps -aux
+          background: true
       - tailscale/connect:
           tailscale-optional-flags: --advertise-tags=tag:ci --hostname=$(echo circleci-${HOSTNAME}) --accept-routes
       - echo-command:
