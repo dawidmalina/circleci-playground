@@ -3,7 +3,8 @@
 version: 2.1
 
 orbs:
-  tailscale: crowley-namespace/tailscale@1.0.0
+  # tailscale: crowley-namespace/tailscale@1.0.0
+  playground: dawidmalina/circleci-playground@0.0.1
 
 # Specify the execution environment. You can specify an image from Docker Hub or use one of our convenience images from CircleCI's Developer Hub.
 # See: https://circleci.com/docs/configuration-reference/#executor-job
@@ -79,37 +80,11 @@ jobs:
     executor: default
     resource_class: small
     steps:
-      - tailscale/install
-      - run:
-          name: install
-          # command: |
-          #   sudo -E tailscaled --state=mem: --tun=userspace-networking 2>~/tailscaled.log &
-          #   # And check that tailscaled came up. The CLI will block for a bit waiting
-          #   # for it. And --json will make it exit with status 0 even if we're logged
-          #   # out (as we will be). Without --json it returns an error if we're not up.
-          #   sudo -E tailscale status --json >/dev/null
-          #   ps -aux
-          command: |
-            sudo -E tailscaled --tun=userspace-networking 2>~/tailscaled.log
-          background: true
-      - run:
-          name: connect
-          command: |
-            cat ~/tailscaled.log
-            ps -aux
-            sudo -E tailscale status --json >/dev/null
-            ps -aux
-            sudo -E tailscale up --authkey ${TAILSCALE_AUTHKEY} --advertise-tags=tag:ci --hostname=$(echo circleci-${HOSTNAME}) --accept-routes
-      # - tailscale/connect:
-      #     tailscale-optional-flags: --advertise-tags=tag:ci --hostname=$(echo circleci-${HOSTNAME}) --accept-routes
-      - echo-command:
-          title: "Demo"
-          message: "Demo!"
+      - playground/tailscale
       - run:
           name: connectivity
           command: |
             nc -w 3 ${ENDPOINT} 22
-      - tailscale/disconnect
 
 # Orchestrate jobs using workflows
 # See: https://circleci.com/docs/configuration-reference/#workflows
