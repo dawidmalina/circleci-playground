@@ -94,10 +94,10 @@ jobs:
             tailscale --socket=/tmp/tailscaled.sock ip -4 vlci01
 
             echo "nc"
-            nc -vz -w 3 $( tailscale --socket=/tmp/tailscaled.sock ip -4 vlci01 ) 443 || echo "error"
+            proxychains nc -vz -w 3 $( tailscale --socket=/tmp/tailscaled.sock ip -4 vlci01 ) 443 || echo "error"
 
             echo "curl"
-            curl -L --connect-timeout 3 -v https://$( tailscale --socket=/tmp/tailscaled.sock ip -4 vlci01 ) || echo "error"
+            proxychains curl -L --connect-timeout 3 -v https://$( tailscale --socket=/tmp/tailscaled.sock ip -4 vlci01 ) || echo "error"
 
             echo "ps"
             ps -efww
