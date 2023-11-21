@@ -136,6 +136,9 @@ workflows:
               only: main
             tags:
               ignore: /.*/
+      - use-tailscale:
+          requires:
+            - init-job
       # - say-hello:
       #     requires:
       #       - init-job
