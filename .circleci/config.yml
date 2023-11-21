@@ -81,7 +81,10 @@ jobs:
     executor: default
     resource_class: small
     steps:
-      - playground/tailscale
+      # - playground/tailscale
+      - tailscale/install
+      - tailscale/proxychains
+      - tailscale/connect
       - run:
           name: connectivity
           command: |
