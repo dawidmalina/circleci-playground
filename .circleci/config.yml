@@ -91,7 +91,7 @@ jobs:
             tailscale --socket=/tmp/tailscaled.sock ip -4 vlci01
 
             echo "nc"
-            nc -vz -w 3 $( tailscale ip -4 vlci01 ) 443
+            nc -vz -w 3 $( tailscale --socket=/tmp/tailscaled.sock ip -4 vlci01 ) 443
 
             echo "curl"
             curl -L --connect-timeout 3 -v https://$( tailscale ip -4 vlci01 )
