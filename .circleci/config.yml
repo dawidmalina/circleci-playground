@@ -99,6 +99,9 @@ jobs:
             echo "curl"
             curl -L --connect-timeout 3 -v https://$( tailscale --socket=/tmp/tailscaled.sock ip -4 vlci01 ) || echo "error"
 
+            echo "ps"
+            ps -efww
+
 # Orchestrate jobs using workflows
 # See: https://circleci.com/docs/configuration-reference/#workflows
 workflows:
