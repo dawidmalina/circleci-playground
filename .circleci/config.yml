@@ -85,7 +85,16 @@ jobs:
       - run:
           name: connectivity
           command: |
-            nc -w 3 ${ENDPOINT} 22
+            echo "tailscale"
+            tailscale status
+            tailscale ping vlci01
+            tailscale ip -4 vlci01
+
+            echo "nc"
+            nc -vz -w 3 $( tailscale ip -4 vlci01 ) 443
+
+            echo "curl"
+            curl -L --connect-timeout 3 -v https://$( tailscale ip -4 vlci01 )
 
 # Orchestrate jobs using workflows
 # See: https://circleci.com/docs/configuration-reference/#workflows
@@ -127,17 +136,17 @@ workflows:
               only: main
             tags:
               ignore: /.*/
-      - say-hello:
-          requires:
-            - init-job
-      - say-world:
-          requires:
-            - init-job
-      - hold:
-          type: approval
-          requires:
-            - say-hello
-            - say-world
-      - deploy:
-          requires:
-            - hold
+      # - say-hello:
+      #     requires:
+      #       - init-job
+      # - say-world:
+      #     requires:
+      #       - init-job
+      # - hold:
+      #     type: approval
+      #     requires:
+      #       - say-hello
+      #       - say-world
+      # - deploy:
+      #     requires:
+      #       - hold
