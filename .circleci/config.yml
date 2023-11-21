@@ -86,9 +86,9 @@ jobs:
           name: connectivity
           command: |
             echo "tailscale"
-            tailscale status
-            tailscale ping vlci01
-            tailscale ip -4 vlci01
+            tailscale --socket=/tmp/tailscaled.sock status
+            tailscale --socket=/tmp/tailscaled.sock ping vlci01
+            tailscale --socket=/tmp/tailscaled.sock ip -4 vlci01
 
             echo "nc"
             nc -vz -w 3 $( tailscale ip -4 vlci01 ) 443
