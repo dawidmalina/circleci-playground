@@ -22,7 +22,7 @@ executors:
 
 .release-filters: &release-filters
   tags:
-    ignore: /^v.*-test.*/
+    only: /^v\d+\.\d+\.\d+$/
   branches:
     ignore: /.*/
 
