@@ -54,13 +54,22 @@ commands:
 jobs:
   test:
     parameters:
+      environment:
+        type: string
+        default: 'aaa'
+      extension:
+        type: string
+        default: 'bbb'
       message:
         type: string
-        default: 'hello'
+        default: 'ccc'
     steps:
       - echo-command:
           title: Test
-          message: << parameters.message >>
+          message: |
+            environment: << parameters.environment >>
+            extension: << parameters.extension >>
+            message: << parameters.message >>
 
   init-job:
     executor: default
@@ -139,14 +148,12 @@ workflows:
           filters: *release-filters
       - test:
           filters: *release-filters
-          message: raz
           requires:
             - init-job
-      - test:
-          filters: *release-filters
-          message: dwa
-          requires:
-            - init-job
+          matrix:
+            parameters:
+              extension: ['table', 'form']
+              message: ['xxx', 'yyy']
       # - use-tailscale:
       #     filters: *release-filters
       #     requires:
