@@ -53,6 +53,8 @@ commands:
 # See: https://circleci.com/docs/configuration-reference/#jobs
 jobs:
   test:
+    executor: default
+    resource_class: small
     parameters:
       environment:
         type: string
