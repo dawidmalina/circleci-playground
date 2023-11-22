@@ -156,12 +156,14 @@ workflows:
           filters: *release-filters
       - test-table:
           filters: *release-filters
-          message: xxx
+          extension: table
+          message: http://xxx
           requires:
             - init-job
       - test-form:
           filters: *release-filters
-          message: yyy
+          extension: form
+          message: http://yyy
           requires:
             - init-job
       # - use-tailscale:
