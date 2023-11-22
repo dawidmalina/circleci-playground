@@ -52,7 +52,7 @@ commands:
 # Define a job to be invoked later in a workflow.
 # See: https://circleci.com/docs/configuration-reference/#jobs
 jobs:
-  test:
+  test-job-template: &test-job-template
     executor: default
     resource_class: small
     parameters:
@@ -72,6 +72,12 @@ jobs:
             environment: << parameters.environment >>
             extension: << parameters.extension >>
             message: << parameters.message >>
+
+  test-table:
+    <<: *test-job-template
+
+  test-form:
+    <<: *test-job-template
 
   init-job:
     executor: default
@@ -148,14 +154,16 @@ workflows:
     jobs:
       - init-job:
           filters: *release-filters
-      - test:
+      - test-table:
           filters: *release-filters
+          message: xxx
           requires:
             - init-job
-          matrix:
-            parameters:
-              extension: ['table', 'form']
-              message: ['xxx', 'yyy']
+      - test-form:
+          filters: *release-filters
+          message: yyy
+          requires:
+            - init-job
       # - use-tailscale:
       #     filters: *release-filters
       #     requires:
